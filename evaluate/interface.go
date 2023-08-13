@@ -10,8 +10,8 @@ type CodeEvaluator interface {
 type IndentType int
 
 const (
-	IndentTypeSpace IndentType = iota
-	IndentTypeTab
+	IndentTypeSpace IndentType = 0
+	IndentTypeTab              = 1
 )
 
 type Indent struct {
