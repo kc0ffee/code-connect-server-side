@@ -9,6 +9,8 @@ import (
 
 type GoEvaluator struct{}
 
+const space = 0x20
+
 func (e *GoEvaluator) CountLines(code string) int {
 	return strings.Count(code, "\n") + 1
 }
@@ -22,11 +24,11 @@ func (e *GoEvaluator) CountNestedBlocks(code string) Indent {
 		if len(line) == 0 {
 			continue
 		}
-		if line[0] == ' ' {
+		if line[0] == space {
 			result.indentType = IndentTypeSpace
 			spaceCount := 0
 			for _, c := range line {
-				if c == ' ' {
+				if c == space {
 					spaceCount++
 				} else {
 					break
