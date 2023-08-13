@@ -13,6 +13,48 @@ func TestGoEvaluator_CountLines(t *testing.T) {
 	}
 }
 
+func TestGoEvaluator_CountNestedBlocks_CaseTab(t *testing.T) {
+	evaluator := &GoEvaluator{}
+	code := "package main\n\nfunc main() {\n\tprintln(\"Hello, world!\")\n}"
+	result := evaluator.CountNestedBlocks(code)
+	nestedBlocks := result.count
+	indentType := result.indentType
+	if nestedBlocks != 1 {
+		t.Errorf("Expected 1 nested blocks, but got %d", nestedBlocks)
+	}
+	if indentType != IndentTypeTab {
+		t.Errorf("Expected indent type tab, but got %s", indentType)
+	}
+}
+
+func TestGoEvaluator_CountNestedBlocks_CaseSpace2(t *testing.T) {
+	evaluator := &GoEvaluator{}
+	code := "package main\n\nfunc main() {\n  println(\"Hello, world!\")\n}"
+	result := evaluator.CountNestedBlocks(code)
+	nestedBlocks := result.count
+	indentType := result.indentType
+	if nestedBlocks != 1 {
+		t.Errorf("Expected 1 nested blocks, but got %d", nestedBlocks)
+	}
+	if indentType != IndentTypeSpace {
+		t.Errorf("Expected indent type space, but got %s", indentType)
+	}
+}
+
+func TestGoEvaluator_CountNestedBlocks_CaseSpace4(t *testing.T) {
+	evaluator := &GoEvaluator{}
+	code := "package main\n\nfunc main() {\n    println(\"Hello, world!\")\n}"
+	result := evaluator.CountNestedBlocks(code)
+	nestedBlocks := result.count
+	indentType := result.indentType
+	if nestedBlocks != 1 {
+		t.Errorf("Expected 1 nested blocks, but got %d", nestedBlocks)
+	}
+	if indentType != IndentTypeSpace {
+		t.Errorf("Expected indent type space, but got %s", indentType)
+	}
+}
+
 func TestGoEvaluator_ParseToAST(t *testing.T) {
 	evaluator := &GoEvaluator{}
 	code := "package main\nfunc main() {}"
