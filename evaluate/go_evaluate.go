@@ -9,8 +9,54 @@ import (
 
 type GoEvaluator struct{}
 
+const space = 0x20
+
 func (e *GoEvaluator) CountLines(code string) int {
 	return strings.Count(code, "\n") + 1
+}
+
+func (e *GoEvaluator) CountNestedBlocks(code string) Indent {
+	lines := strings.Split(code, "\n")
+	nestCount := 0
+	maxNest := 0
+	result := Indent{count: 0}
+	for _, line := range lines {
+		if len(line) == 0 {
+			continue
+		}
+		if line[0] == space {
+			result.indentType = IndentTypeSpace
+			spaceCount := 0
+			for _, c := range line {
+				if c == space {
+					spaceCount++
+				} else {
+					break
+				}
+			}
+			if spaceCount > maxNest {
+				nestCount++
+				maxNest = spaceCount
+			}
+		}
+		if line[0] == '\t' {
+			result.indentType = IndentTypeTab
+			tabCount := 0
+			for _, c := range line {
+				if c == '\t' {
+					tabCount++
+				} else {
+					break
+				}
+			}
+			if tabCount > maxNest {
+				nestCount++
+				maxNest = tabCount
+			}
+		}
+	}
+	result.count = nestCount
+	return result
 }
 
 func (e *GoEvaluator) ParseToAST(code string) (interface{}, error) {
