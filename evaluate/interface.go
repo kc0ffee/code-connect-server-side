@@ -3,6 +3,7 @@ package evaluate
 type CodeEvaluator interface {
 	CountLines(code string) int
 	CountNestedBlocks(code string) int
+	CountTokens(code string) int
 	ParseToAST(code string) (interface{}, error)
 	EvaluateAST(ast interface{}) *EvaluationResult
 }
@@ -31,9 +32,8 @@ func (i IndentType) String() string {
 }
 
 type EvaluationResult struct {
-	TokenCount            int
-	FunctionCount         int
-	Indent                IndentType
-	AverageFunctionLength float32
+	FunctionCount     int
+	Indent            IndentType
+	AverageNameLength float32
 	// snip...
 }
