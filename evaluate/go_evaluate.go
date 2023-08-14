@@ -3,6 +3,7 @@ package evaluate
 import (
 	"go/ast"
 	"go/parser"
+	"go/scanner"
 	"go/token"
 	"strings"
 )
@@ -59,6 +60,23 @@ func (e *GoEvaluator) CountNestedBlocks(code string) Indent {
 	return result
 }
 
+func (e *GoEvaluator) CountTokens(code string) int {
+	fset := token.NewFileSet()
+	file := fset.AddFile("", fset.Base(), len(code))
+	var s scanner.Scanner
+	s.Init(file, []byte(code), nil, 0)
+
+	count := 0
+	for {
+		_, tok, _ := s.Scan()
+		if tok == token.EOF {
+			break
+		}
+		count++
+	}
+	return count
+}
+
 func (e *GoEvaluator) ParseToAST(code string) (interface{}, error) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, "", code, parser.ParseComments)
@@ -69,6 +87,7 @@ func (e *GoEvaluator) ParseToAST(code string) (interface{}, error) {
 }
 
 func (e *GoEvaluator) EvaluateAST(targetAst interface{}) *EvaluationResult {
+	tokenLen := []int{}
 	result := &EvaluationResult{}
 	node, ok := targetAst.(*ast.File)
 	if !ok {
@@ -80,10 +99,16 @@ func (e *GoEvaluator) EvaluateAST(targetAst interface{}) *EvaluationResult {
 		case *ast.FuncDecl:
 			result.FunctionCount++
 		case *ast.Ident:
-			result.TokenCount++
+			tokenLen = append(tokenLen, len(n.(*ast.Ident).Name))
 		}
 		return true
 	})
+	// calculate average name length
+	sum := 0
+	for _, l := range tokenLen {
+		sum += l
+	}
+	result.AverageNameLength = float32(sum) / float32(len(tokenLen))
 
 	return result
 }
