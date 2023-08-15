@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/joho/godotenv"
+	"github.com/kc0ffee/server/database"
 	"github.com/kc0ffee/server/server"
 )
 
@@ -27,6 +28,9 @@ func main() {
 		fmt.Printf("Error : %+v\n", err)
 		os.Exit(-1)
 	}
+
+	db := database.NewDBConnection(os.Getenv("DATABASE_ADDRESS"), os.Getenv("DATABASE_USER"), os.Getenv("DATABASE_NAME"))
+	defer db.Close()
 
 	e := server.NewAPIServer()
 	server.StartServer(e, port)
