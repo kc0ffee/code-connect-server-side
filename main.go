@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/joho/godotenv"
+	"github.com/kc0ffee/server/database"
 	"github.com/kc0ffee/server/server"
 )
 
@@ -30,4 +31,6 @@ func main() {
 
 	e := server.NewAPIServer()
 	server.StartServer(e, port)
+	db := database.NewDBConnection(os.Getenv("DATABASE_ADDRESS"), os.Getenv("DATABASE_USER"), os.Getenv("DATABASE_NAME"))
+	database.Insert(db, 123, "test")
 }
