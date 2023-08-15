@@ -33,7 +33,6 @@ func (i IndentType) String() string {
 
 type EvaluationResult struct {
 	FunctionCount     int
-	Indent            IndentType
 	AverageNameLength float32
 	// snip...
 }
