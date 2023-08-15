@@ -1,0 +1,16 @@
+{
+  "themes": [
+    {
+      "id": 1,
+      "theme": "Theme_1"
+    },
+    {
+      "id": 2,
+      "theme": "Theme_2"
+    },
+    {
+      "id": 3,
+      "theme": "Theme_3"
+    }
+  ]
+}
