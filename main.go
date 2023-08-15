@@ -1,10 +1,33 @@
 package main
 
 import (
+	"fmt"
+	"os"
+	"strconv"
+
+	"github.com/joho/godotenv"
 	"github.com/kc0ffee/server/server"
 )
 
+func EnvLoad() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		fmt.Printf("%+v\n", err)
+		os.Exit(-1)
+	}
+	fmt.Println(".env was loaded.")
+	fmt.Printf("SERVER_PORT : %s\n", os.Getenv("SERVER_PORT"))
+}
+
 func main() {
+	EnvLoad()
+
+	port, err := strconv.Atoi(os.Getenv("SERVER_PORT"))
+	if err != nil {
+		fmt.Printf("Error : %+v\n", err)
+		os.Exit(-1)
+	}
+
 	e := server.NewAPIServer()
-	server.StartServer(e, 10000)
+	server.StartServer(e, port)
 }
