@@ -1,9 +1,10 @@
-package handler
+package theme
 
 import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 
 	"github.com/labstack/echo/v4"
@@ -45,12 +46,12 @@ func loadTheme() (*GetThemeAPIResponse, error) {
 func init() {
 	data, err := loadTheme()
 	if err != nil {
-		return
+		panic("テーマファイルの読み込みに失敗しました。")
 	}
 	Response = data
 	return
 }
 
 func GetThemeHandler(ctx echo.Context) error {
-	return nil
+	return ctx.JSON(http.StatusOK, Response)
 }
