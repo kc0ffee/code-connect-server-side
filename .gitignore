@@ -19,3 +19,8 @@
 
 # Go workspace file
 go.work
+
+# Workspace originals
+
+# project configure files
+.env
