@@ -9,7 +9,7 @@ import (
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo"
 )
 
 func NewDBConnection(ADDRESS string, USER string, DB_NAME string) *sql.DB {
@@ -26,13 +26,15 @@ func NewDBConnection(ADDRESS string, USER string, DB_NAME string) *sql.DB {
 
 type ReturnData struct {
 	ID        int    `json:"id"`
-	Theme     int    `json:"theme"`
+	Theme     int    `json:"themeId"`
+	Lang      string `json:"language"`
 	Code      string `json:"code"`
-	Timestamp string `json:"timestamp"`
+	Timestamp string `json:"timeStamp"`
 }
 
 type PostData struct {
-	Theme int    `json:"theme"`
+	Theme int    `json:"themeId"`
+	Lang  string `json:"language"`
 	Code  string `json:"code"`
 }
 
@@ -43,7 +45,7 @@ func GetResultById(c echo.Context, db *sql.DB) error {
 	}
 	var result = ReturnData{}
 	row := db.QueryRow("SELECT * FROM results WHERE id = ?", id)
-	err = row.Scan(&result.ID, &result.Theme, &result.Code, &result.Timestamp)
+	err = row.Scan(&result.ID, &result.Theme, &result.Lang, &result.Code, &result.Timestamp)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "Error getting result")
 	}
@@ -56,13 +58,12 @@ func CreateResult(c echo.Context, db *sql.DB) error {
 	if err := c.Bind(&body); err != nil {
 		return c.String(http.StatusBadRequest, "Invalid request")
 	}
-	result := ReturnData{Theme: body.Theme, Code: body.Code}
 	now := time.Now()
-	result.Timestamp = now.Format("2006-01-02 15:04:05")
-	_, err := db.Exec("INSERT INTO results (theme, code, timestamp) VALUES (?, ?, ?)", result.Theme, result.Code, result.Timestamp)
+	Timestamp := now.Format("2006-01-02 15:04:05")
+	_, err := db.Exec("INSERT INTO results (theme, lang, code, timestamp) VALUES (?, ?, ?, ?)", body.Theme, body.Lang, body.Code, Timestamp)
 	if err != nil {
 		fmt.Println(err)
-		return c.String(http.StatusInternalServerError, "Error inserting result")
+		return
 	}
-	return c.String(http.StatusOK, "Result posted")
+	fmt.Println("Inserted into database")
 }
