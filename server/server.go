@@ -1,14 +1,16 @@
 package server
 
 import (
+	"database/sql"
 	"fmt"
 
+	"github.com/kc0ffee/server/database"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 // NewAPIServer is a function to create new instance of server
-func NewAPIServer() *echo.Echo {
+func NewAPIServer(db *sql.DB) *echo.Echo {
 	e := echo.New()
 
 	// Set middleware
@@ -17,6 +19,12 @@ func NewAPIServer() *echo.Echo {
 	e.Use(middleware.Recover())
 
 	// TODO: APIのハンドラーの追加
+	e.GET("/api/result", func(c echo.Context) error {
+		return database.GetResultById(c, db)
+	})
+	e.POST("/api/result", func(c echo.Context) error {
+		return database.CreateResult(c, db)
+	})
 
 	return e
 }
