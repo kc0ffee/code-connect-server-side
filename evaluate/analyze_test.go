@@ -59,16 +59,3 @@ func TestAnalyze(t *testing.T) {
 		}
 	}
 }
-
-func TestCalcTransparency(t *testing.T) {
-	// 透明性の計算に対するテスト
-
-}
-
-func TestCalcEfficiency(t *testing.T) {
-	// 効率性の計算に対するテスト
-}
-
-func TestDifficulty(t *testing.T) {
-	// 難易度の計算に対するテスト
-}

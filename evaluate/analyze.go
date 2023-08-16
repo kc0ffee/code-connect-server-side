@@ -1,24 +1,3 @@
-/// タイプ診断: 透明性､効率性の2軸評価
-/// 透明性の評価
-///   コード行数が短い
-///   命名平均長が長い
-///   関数の個数が多い
-///
-/// 効率性の評価
-///   トークン数が少ない
-///   ネストが浅い
-///   関数の個数が少ない
-
-/*
-type EvaluationResult struct {
-	lines             int
-	tokens            int
-	indent            Indent
-	functionCount     int
-	averageNameLength float32
-}
-*/
-
 package evaluate
 
 import (
@@ -40,9 +19,6 @@ const (
 const CORRECTION_FACTOR float32 = 0.5
 
 func Analyze(result *EvaluationResult, theme int) AnalysisResult {
-	//theme is difficulty, lower is easier, higher is harder
-
-	//透明性の評価
 	transparency := calcTransparency(theme, result.averageNameLength, result.lines, result.functionCount)
 	efficiency := calcEfficiency(theme, result.tokens, result.lines, result.functionCount)
 
