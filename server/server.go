@@ -25,7 +25,7 @@ func NewAPIServer(db *sql.DB) *echo.Echo {
 	e.GET("/api/result", func(c echo.Context) error {
 		return database.GetResultById(c, db)
 	})
-	e.POST("/api/result", func(c echo.Context) error {
+	e.POST("/api/code", func(c echo.Context) error {
 		return database.CreateResult(c, db)
 	})
 
