@@ -9,7 +9,7 @@ import (
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 func NewDBConnection(ADDRESS string, USER string, DB_NAME string) *sql.DB {
