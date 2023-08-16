@@ -25,14 +25,14 @@ func NewDBConnection(ADDRESS string, USER string, DB_NAME string) *sql.DB {
 }
 
 type ReturnData struct {
-	ID        int64  `json:"id"`
-	Theme     string `json:"theme"`
+	ID        int    `json:"id"`
+	Theme     int    `json:"theme"`
 	Code      string `json:"code"`
 	Timestamp string `json:"timestamp"`
 }
 
 type PostData struct {
-	Theme string `json:"theme"`
+	Theme int    `json:"theme"`
 	Code  string `json:"code"`
 }
 
