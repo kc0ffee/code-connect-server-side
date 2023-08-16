@@ -32,7 +32,9 @@ func (i IndentType) String() string {
 }
 
 type EvaluationResult struct {
-	FunctionCount     int
-	AverageNameLength float32
-	// snip...
+	lines             int
+	tokens            int
+	indent            Indent
+	functionCount     int
+	averageNameLength float32
 }

@@ -57,10 +57,10 @@ func TestPythonEvaluator_CountFunctionCalls(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error: %s", err)
 	}
-	if result.FunctionCount != 2 {
-		t.Errorf("Expected 2, got %d", result.FunctionCount)
+	if result.functionCount != 2 {
+		t.Errorf("Expected 2, got %d", result.functionCount)
 	}
-	if result.AverageNameLength != 5.0 {
-		t.Errorf("Expected 4, got %f", result.AverageNameLength)
+	if result.averageNameLength != 5.0 {
+		t.Errorf("Expected 4, got %f", result.averageNameLength)
 	}
 }

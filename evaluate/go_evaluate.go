@@ -97,7 +97,7 @@ func (e *GoEvaluator) EvaluateAST(targetAst interface{}) *EvaluationResult {
 	ast.Inspect(node, func(n ast.Node) bool {
 		switch n.(type) {
 		case *ast.FuncDecl:
-			result.FunctionCount++
+			result.functionCount++
 		case *ast.Ident:
 			tokenLen = append(tokenLen, len(n.(*ast.Ident).Name))
 		}
@@ -108,7 +108,7 @@ func (e *GoEvaluator) EvaluateAST(targetAst interface{}) *EvaluationResult {
 	for _, l := range tokenLen {
 		sum += l
 	}
-	result.AverageNameLength = float32(sum) / float32(len(tokenLen))
+	result.averageNameLength = float32(sum) / float32(len(tokenLen))
 
 	return result
 }
