@@ -52,8 +52,8 @@ func GetResultById(c echo.Context, db *sql.DB) error {
 }
 
 func CreateResult(c echo.Context, db *sql.DB) error {
-	body := new(PostData)
-	if err := (&body); err != nil {
+	body := PostData{}
+	if err := c.Bind(&body); err != nil {
 		return c.String(http.StatusBadRequest, "Invalid request")
 	}
 	result := ReturnData{Theme: body.Theme, Code: body.Code}
