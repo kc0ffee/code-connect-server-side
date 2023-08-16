@@ -32,6 +32,6 @@ func main() {
 	db := database.NewDBConnection(os.Getenv("DATABASE_ADDRESS"), os.Getenv("DATABASE_USER"), os.Getenv("DATABASE_NAME"))
 	defer db.Close()
 
-	e := server.NewAPIServer()
+	e := server.NewAPIServer(db)
 	server.StartServer(e, port)
 }
