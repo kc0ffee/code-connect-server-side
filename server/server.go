@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/kc0ffee/server/database"
+	"github.com/kc0ffee/server/theme"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -19,6 +20,8 @@ func NewAPIServer(db *sql.DB) *echo.Echo {
 	e.Use(middleware.Recover())
 
 	// TODO: APIのハンドラーの追加
+	e.GET("/api/theme", theme.GetThemeHandler)
+
 	e.GET("/api/result", func(c echo.Context) error {
 		return database.GetResultById(c, db)
 	})
