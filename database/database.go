@@ -63,7 +63,8 @@ func CreateResult(c echo.Context, db *sql.DB) error {
 	_, err := db.Exec("INSERT INTO results (theme, lang, code, timestamp) VALUES (?, ?, ?, ?)", body.Theme, body.Lang, body.Code, Timestamp)
 	if err != nil {
 		fmt.Println(err)
-		return
+		return c.String(http.StatusInternalServerError, "Error inserting into database")
 	}
 	fmt.Println("Inserted into database")
+	return c.String(http.StatusOK, "Success")
 }
