@@ -2,9 +2,8 @@ package evaluate
 
 type CodeEvaluator interface {
 	CountLines(code string) int
-	CountNestedBlocks(code string) int
+	CountNestedBlocks(code string) Indent
 	CountTokens(code string) int
-	ParseToAST(code string) (interface{}, error)
 	EvaluateAST(ast interface{}) *EvaluationResult
 }
 
