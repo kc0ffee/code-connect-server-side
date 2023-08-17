@@ -28,7 +28,7 @@ func PostCodeHandler(ctx echo.Context) error {
 	registerData.Lang = body.Lang
 	registerData.Theme = body.Theme
 
-	timestamp, err := database.AddCodeData(&body)
+	timestamp, err := database.AddCodeData(&registerData)
 	if err != nil {
 		return ctx.String(http.StatusInternalServerError, "Failure to update database")
 	}
