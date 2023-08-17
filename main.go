@@ -29,9 +29,11 @@ func main() {
 		os.Exit(-1)
 	}
 
+	// DBの初期化は副作用のある初期化なので注意
 	db := database.NewDBConnection(os.Getenv("DATABASE_ADDRESS"), os.Getenv("DATABASE_USER"), os.Getenv("DATABASE_NAME"))
 	defer db.Close()
+	database.ConnectionInitialize(db)
 
-	e := server.NewAPIServer(db)
+	e := server.NewAPIServer()
 	server.StartServer(e, port)
 }
