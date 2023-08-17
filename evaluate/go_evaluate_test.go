@@ -76,16 +76,16 @@ func TestGoEvaluator_ParseToAST(t *testing.T) {
 func TestGoEvaluator_EvaluateAST_FuncCount(t *testing.T) {
 	evaluator := &GoEvaluator{}
 	code := "package main\nfunc main() {}\nfunc test() {}\nfunc test2() {}"
-	ast, err := evaluator.ParseToAST(code)
+	_, err := evaluator.ParseToAST(code)
 	if err != nil {
 		t.Fatalf("Failed to parse code: %v", err)
 	}
 
-	result := evaluator.EvaluateAST(ast)
-	if result.functionCount != 3 {
-		t.Errorf("Expected 2 functions, but got %d", result.functionCount)
+	result := evaluator.EvaluateAST(code)
+	if result.FunctionCount != 3 {
+		t.Errorf("Expected 2 functions, but got %d", result.FunctionCount)
 	}
-	if result.averageNameLength != 4.25 {
-		t.Errorf("Expected 4.5 average name length, but got %f", result.averageNameLength)
+	if result.AverageNameLength != 4.25 {
+		t.Errorf("Expected 4.5 average name length, but got %f", result.AverageNameLength)
 	}
 }

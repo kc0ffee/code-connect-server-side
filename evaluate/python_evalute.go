@@ -66,22 +66,22 @@ func (e *PythonEvaluator) CountTokens(code string) int {
 	return outInt
 }
 
-func (e *PythonEvaluator) EvaluateAST(code string) (EvaluationResult, error) {
+func (e *PythonEvaluator) EvaluateAST(code string) EvaluationResult {
 	cmd := exec.Command("python", "./languages/python/AST.py", "evaluate", code)
 	out, err := cmd.Output()
 	if err != nil {
-		return EvaluationResult{}, err
+		return EvaluationResult{}
 	}
 	//parse out to EvaluateResult
 	result := EvaluationResult{}
 	out = out[:len(out)-2]
 	output := strings.Split(string(out), " ")
-	result.functionCount, err = strconv.Atoi(output[0])
+	result.FunctionCount, err = strconv.Atoi(output[0])
 	avarage, err := strconv.ParseFloat(output[1], 32)
-	result.averageNameLength = float32(avarage)
+	result.AverageNameLength = float32(avarage)
 	if err != nil {
-		return EvaluationResult{}, err
+		return EvaluationResult{}
 	}
 
-	return result, nil
+	return result
 }

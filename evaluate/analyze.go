@@ -19,8 +19,8 @@ const (
 const CORRECTION_FACTOR float32 = 0.5
 
 func Analyze(result *EvaluationResult, theme int) AnalysisResult {
-	transparency := calcTransparency(theme, result.averageNameLength, result.lines, result.functionCount)
-	efficiency := calcEfficiency(theme, result.tokens, result.lines, result.functionCount)
+	transparency := calcTransparency(theme, result.AverageNameLength, result.Lines, result.FunctionCount)
+	efficiency := calcEfficiency(theme, result.Tokens, result.Lines, result.FunctionCount)
 
 	if transparency > 0.5 && efficiency > 0.5 {
 		return analyst

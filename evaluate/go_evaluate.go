@@ -86,9 +86,13 @@ func (e *GoEvaluator) ParseToAST(code string) (interface{}, error) {
 	return node, nil
 }
 
-func (e *GoEvaluator) EvaluateAST(targetAst interface{}) *EvaluationResult {
+func (e *GoEvaluator) EvaluateAST(code string) EvaluationResult {
+	targetAst, err := e.ParseToAST(code)
+	if err != nil {
+		return EvaluationResult{}
+	}
 	tokenLen := []int{}
-	result := &EvaluationResult{}
+	result := EvaluationResult{}
 	node, ok := targetAst.(*ast.File)
 	if !ok {
 		return result
@@ -97,7 +101,7 @@ func (e *GoEvaluator) EvaluateAST(targetAst interface{}) *EvaluationResult {
 	ast.Inspect(node, func(n ast.Node) bool {
 		switch n.(type) {
 		case *ast.FuncDecl:
-			result.functionCount++
+			result.FunctionCount++
 		case *ast.Ident:
 			tokenLen = append(tokenLen, len(n.(*ast.Ident).Name))
 		}
@@ -108,7 +112,7 @@ func (e *GoEvaluator) EvaluateAST(targetAst interface{}) *EvaluationResult {
 	for _, l := range tokenLen {
 		sum += l
 	}
-	result.averageNameLength = float32(sum) / float32(len(tokenLen))
+	result.AverageNameLength = float32(sum) / float32(len(tokenLen))
 
 	return result
 }
