@@ -53,14 +53,11 @@ func TestPythonEvaluater_CountTokens(t *testing.T) {
 func TestPythonEvaluator_CountFunctionCalls(t *testing.T) {
 	code := "def hello():\n\tprint(\"Hello, World!\")\n\nhello()"
 	evaluator := PythonEvaluator{}
-	result, err := evaluator.EvaluateAST(code)
-	if err != nil {
-		t.Errorf("Error: %s", err)
+	result := evaluator.EvaluateAST(code)
+	if result.FunctionCount != 2 {
+		t.Errorf("Expected 2, got %d", result.FunctionCount)
 	}
-	if result.functionCount != 2 {
-		t.Errorf("Expected 2, got %d", result.functionCount)
-	}
-	if result.averageNameLength != 5.0 {
-		t.Errorf("Expected 4, got %f", result.averageNameLength)
+	if result.AverageNameLength != 5.0 {
+		t.Errorf("Expected 4, got %f", result.AverageNameLength)
 	}
 }

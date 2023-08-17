@@ -1,10 +1,23 @@
 package evaluate
 
+import "errors"
+
 type CodeEvaluator interface {
 	CountLines(code string) int
 	CountNestedBlocks(code string) Indent
 	CountTokens(code string) int
-	EvaluateAST(ast interface{}) *EvaluationResult
+	EvaluateAST(code string) EvaluationResult
+}
+
+func NewEvaluator(lang string) (CodeEvaluator, error) {
+	switch lang {
+	case "go":
+		return &GoEvaluator{}, nil
+	case "python":
+		return &PythonEvaluator{}, nil
+	default:
+		return nil, errors.New("Invalid language")
+	}
 }
 
 type IndentType int
@@ -31,9 +44,9 @@ func (i IndentType) String() string {
 }
 
 type EvaluationResult struct {
-	lines             int
-	tokens            int
-	indent            Indent
-	functionCount     int
-	averageNameLength float32
+	Lines             int
+	Tokens            int
+	Indent            Indent
+	FunctionCount     int
+	AverageNameLength float32
 }
