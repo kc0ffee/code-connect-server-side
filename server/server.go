@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/kc0ffee/server/code"
+	"github.com/kc0ffee/server/result"
 	"github.com/kc0ffee/server/theme"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -20,7 +21,7 @@ func NewAPIServer() *echo.Echo {
 
 	// TODO: APIのハンドラーの追加
 	e.GET("/api/theme", theme.GetThemeHandler)
-	e.GET("/api/result", code.ResultHandler)
+	e.GET("/api/result", result.ResultHandler)
 	e.POST("/api/code", code.PostCodeHandler)
 
 	return e
