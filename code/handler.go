@@ -2,6 +2,7 @@ package code
 
 import (
 	"database/sql"
+	"encoding/base64"
 	"errors"
 	"net/http"
 	"strconv"
@@ -12,11 +13,22 @@ import (
 )
 
 func PostCodeHandler(ctx echo.Context) error {
-	body := models.CodeData{}
+	var body models.CodeData
 	if err := ctx.Bind(&body); err != nil {
 		return ctx.String(http.StatusBadRequest, "Invalid request")
 	}
-	timestamp, err := database.AddCodeData(&body)
+
+	var registerData models.CodeData
+	decoded, err := base64.StdEncoding.DecodeString(body.Code)
+	if err != nil {
+		return ctx.String(http.StatusInternalServerError, "Failure decode")
+	}
+
+	registerData.Code = string(decoded)
+	registerData.Lang = body.Lang
+	registerData.Theme = body.Theme
+
+	timestamp, err := database.AddCodeData(&registerData)
 	if err != nil {
 		return ctx.String(http.StatusInternalServerError, "Failure to update database")
 	}
@@ -33,12 +45,21 @@ func ResultHandler(ctx echo.Context) error {
 	if err != nil {
 		return ctx.String(http.StatusBadRequest, "Invalid id")
 	}
-	res, err := database.FetchCodeDataByID(id)
+	data, err := database.FetchCodeDataByID(id)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return ctx.String(http.StatusBadRequest, "Not found Id")
 		}
 		return ctx.String(http.StatusInternalServerError, "Error")
 	}
+
+	res := models.CodeDataResponse{
+		ID:        data.ID,
+		Theme:     data.Theme,
+		Lang:      data.Lang,
+		Code:      base64.StdEncoding.EncodeToString([]byte(data.Code)),
+		Timestamp: data.Timestamp,
+	}
+
 	return ctx.JSON(http.StatusOK, res)
 }
