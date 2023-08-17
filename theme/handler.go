@@ -7,25 +7,15 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/kc0ffee/server/models"
 	"github.com/labstack/echo/v4"
 )
 
-type (
-	Theme struct {
-		ID    int    `json:"id"`    // ID はテーマのIDが格納される
-		Theme string `json:"theme"` // Theme はテーマ本文が格納される
-	}
-
-	GetThemeAPIResponse struct {
-		Themes []Theme `json:"themes"`
-	}
-)
-
 var (
-	Response *GetThemeAPIResponse
+	themeList *models.ThemeList
 )
 
-func loadTheme() (*GetThemeAPIResponse, error) {
+func loadTheme() (*models.ThemeList, error) {
 	f, err := os.Open("themes.json")
 	if err != nil {
 		fmt.Printf("%+v\n", err)
@@ -34,7 +24,7 @@ func loadTheme() (*GetThemeAPIResponse, error) {
 	defer f.Close()
 
 	bytes, err := io.ReadAll(f)
-	var theme GetThemeAPIResponse
+	var theme models.ThemeList
 	if err = json.Unmarshal(bytes, &theme); err != nil {
 		fmt.Printf("%+v\n", err)
 		return nil, err
@@ -48,10 +38,14 @@ func init() {
 	if err != nil {
 		panic("テーマファイルの読み込みに失敗しました。")
 	}
-	Response = data
+	themeList = data
 	return
 }
 
+func GetThemeList() *models.ThemeList {
+	return themeList
+}
+
 func GetThemeHandler(ctx echo.Context) error {
-	return ctx.JSON(http.StatusOK, Response)
+	return ctx.JSON(http.StatusOK, themeList)
 }
