@@ -20,11 +20,8 @@ func NewAPIServer() *echo.Echo {
 
 	// TODO: APIのハンドラーの追加
 	e.GET("/api/theme", theme.GetThemeHandler)
+	e.GET("/api/result", code.ResultHandler)
 	e.POST("/api/code", code.PostCodeHandler)
-
-	// e.GET("/api/result", func(c echo.Context) error {
-	// 	return database.GetResultById(c, db)
-	// })
 
 	return e
 }
