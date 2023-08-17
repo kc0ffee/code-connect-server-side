@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math/rand"
 	"net/http"
 	"os"
 
@@ -47,5 +48,7 @@ func GetThemeList() *models.ThemeList {
 }
 
 func GetThemeHandler(ctx echo.Context) error {
-	return ctx.JSON(http.StatusOK, themeList)
+	index := rand.Intn(len(themeList.Themes))
+	res := themeList.Themes[index]
+	return ctx.JSON(http.StatusOK, res)
 }
