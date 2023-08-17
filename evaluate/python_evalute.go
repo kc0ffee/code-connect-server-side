@@ -76,9 +76,9 @@ func (e *PythonEvaluator) EvaluateAST(code string) (EvaluationResult, error) {
 	result := EvaluationResult{}
 	out = out[:len(out)-2]
 	output := strings.Split(string(out), " ")
-	result.FunctionCount, err = strconv.Atoi(output[0])
+	result.functionCount, err = strconv.Atoi(output[0])
 	avarage, err := strconv.ParseFloat(output[1], 32)
-	result.AverageNameLength = float32(avarage)
+	result.averageNameLength = float32(avarage)
 	if err != nil {
 		return EvaluationResult{}, err
 	}

@@ -82,10 +82,10 @@ func TestGoEvaluator_EvaluateAST_FuncCount(t *testing.T) {
 	}
 
 	result := evaluator.EvaluateAST(ast)
-	if result.FunctionCount != 3 {
-		t.Errorf("Expected 2 functions, but got %d", result.FunctionCount)
+	if result.functionCount != 3 {
+		t.Errorf("Expected 2 functions, but got %d", result.functionCount)
 	}
-	if result.AverageNameLength != 4.25 {
-		t.Errorf("Expected 4.5 average name length, but got %f", result.AverageNameLength)
+	if result.averageNameLength != 4.25 {
+		t.Errorf("Expected 4.5 average name length, but got %f", result.averageNameLength)
 	}
 }
