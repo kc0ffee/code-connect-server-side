@@ -1,10 +1,10 @@
 package evaluate
 
 import (
-	"encoding/json"
-	"io"
 	"math"
-	"os"
+
+	"github.com/kc0ffee/server/models"
+	"github.com/kc0ffee/server/theme"
 )
 
 type AnalysisResult string
@@ -45,31 +45,12 @@ func calcEfficiency(theme, tokens int, lines int, functionCount int) float32 {
 	return float32(math.Tanh(float64(efficiency)))
 }
 
-type Themes struct {
-	Themes []struct {
-		ID    int    `json:"id"`
-		Theme string `json:"theme"`
-	} `json:"themes"`
-}
-
 func difficulty(id int) float32 {
 	// load ../themes.json
-	f, err := os.Open("../themes.json")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
 
-	bytes, err := io.ReadAll(f)
-	if err != nil {
-		panic(err)
-	}
-
-	var theme Themes
-	if err := json.Unmarshal(bytes, &theme); err != nil {
-		panic(err)
-	}
-	length := len(theme.Themes)
+	var themeData models.ThemeList
+	themeData = *theme.GetThemeList()
+	length := len(themeData.Themes)
 
 	return float32(1-id) / float32(length-1)
 }

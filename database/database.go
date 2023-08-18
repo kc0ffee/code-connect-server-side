@@ -35,7 +35,7 @@ func ConnectionInitialize(db *sql.DB) {
 func FetchCodeDataByID(id int) (*models.CodeDataResponse, error) {
 	var result = models.CodeDataResponse{}
 	row := connection.QueryRow("SELECT * FROM results WHERE id = ?", id)
-	err := row.Scan(&result.ID, &result.Theme, &result.Lang, &result.Code, &result.Timestamp)
+	err := row.Scan(&result.ID, &result.Theme, &result.Code, &result.Timestamp, &result.Lang)
 	if err != nil {
 		return nil, err
 	}
